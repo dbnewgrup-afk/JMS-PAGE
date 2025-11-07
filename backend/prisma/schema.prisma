@@ -1,0 +1,91 @@
+// prisma/schema.prisma
+// ======================================
+// Prisma schema for Les Musik Payments
+// Target DB: MySQL/MariaDB (Hostinger)
+// ======================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/* ======================================
+ * ENUMS
+ * ====================================== */
+enum OrderStatus {
+  PENDING
+  WAITING_PAYMENT
+  PAID
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  EXPIRED
+  REFUND_REQUESTED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  MIDTRANS
+  CASH
+}
+
+/* ======================================
+ * MODEL: LessonProduct
+ * - Daftar harga per kelas
+ * - Panjang kolom disetel aman utk index/unique (191)
+ * ====================================== */
+model LessonProduct {
+  id        String   @id @db.VarChar(191)
+  name      String   @unique @db.VarChar(191)   // ex: Gitar, Vocal, dsb
+  price     Int
+  createdAt DateTime @default(now()) @db.DateTime(3)
+  updatedAt DateTime @updatedAt @db.DateTime(3)
+
+  @@map("LessonProduct")
+}
+
+/* ======================================
+ * MODEL: LessonOrder
+ * - Transaksi siswa per kelas
+ * - Panjang kolom & tipe menyesuaikan MySQL
+ * ====================================== */
+model LessonOrder {
+  id              String           @id @db.VarChar(191)
+  code            String           @unique @db.VarChar(64)
+  studentName     String           @db.VarChar(191)
+  studentPhone    String           @db.VarChar(32)
+  subject         String           @db.VarChar(64)      // contoh nilai: "Gitar"
+  syllabusId      String?          @db.VarChar(191)
+  preferredAt     DateTime?        @db.DateTime(3)
+  amount          Int
+  currency        String           @default("IDR") @db.VarChar(16)
+  status          OrderStatus      @default(PENDING)
+  paymentStatus   PaymentStatus    @default(UNPAID)
+  paymentProvider PaymentProvider  @default(MIDTRANS)
+  snapToken       String?          @db.VarChar(100)
+  snapRedirectUrl String?          @db.Text
+  paidAt          DateTime?        @db.DateTime(3)
+  expireAt        DateTime?        @db.DateTime(3)
+  notes           String?          @db.Text
+  createdAt       DateTime         @default(now()) @db.DateTime(3)
+  updatedAt       DateTime         @updatedAt @db.DateTime(3)
+
+  @@index([code])
+  @@index([status, paymentStatus])
+  @@map("LessonOrder")
+}
+
+/* ======================================
+ * Penting:
+ * - JANGAN definisikan model `_prisma_migrations` di schema.
+ *   Itu tabel internal Prisma dan dikelola otomatis.
+ * ====================================== */
