@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023", "DOM"],            // DOM → supaya tipe fetch dikenali
-    "module": "ES2020",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "noEmit": false,
-    "outDir": "dist",
+    "target": "ES2020",
+    "lib": ["ES2023"],
+    "module": "CommonJS",
     "rootDir": ".",
-    "resolveJsonModule": true,
+    "outDir": "dist",
     "esModuleInterop": true,
-    "types": ["node"],
-    "skipLibCheck": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
   "include": ["src/**/*.ts", "prisma/**/*.ts"],
   "exclude": ["node_modules", "dist"]
