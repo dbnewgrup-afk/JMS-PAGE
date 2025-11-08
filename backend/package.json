@@ -2,11 +2,11 @@
   "name": "jms-backend",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/server.js",
+  "main": "backend/dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node backend/dist/server.js",
     "postinstall": "prisma generate",
     "migrate:deploy": "prisma migrate deploy"
   },
@@ -28,8 +28,9 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  }, 
+  },
   "engines": {
     "node": ">=18"
   }
 }
+  
