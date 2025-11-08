@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2023", "DOM"],            // DOM → supaya tipe fetch dikenali
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ES2020",
+    "moduleResolution": "Bundler",
     "strict": true,
     "noEmit": false,
     "outDir": "dist",
